@@ -3,6 +3,36 @@ from fastapi.responses import JSONResponse
 from ultralytics import YOLO
 import cv2
 import numpy as np
+import torch
+from ultralytics.nn.tasks import DetectionModel
+import torch.nn.modules.container
+
+# Prueba todas las rutas posibles para Conv
+Conv = None
+try:
+    from ultralytics.nn.modules.conv import Conv
+except ImportError:
+    try:
+        from ultralytics.nn.common import Conv
+    except ImportError:
+        try:
+            from ultralytics.nn.modules import Conv
+        except ImportError:
+            try:
+                from ultralytics.nn import Conv
+            except ImportError:
+                Conv = None
+
+if Conv is None:
+    raise ImportError("No se pudo importar Conv desde ninguna ruta conocida de Ultralytics.")
+
+safe_globals = [
+    DetectionModel,
+    torch.nn.modules.container.Sequential,
+    Conv,
+]
+
+torch.serialization.add_safe_globals(safe_globals)
 
 app = FastAPI()
 model = YOLO("best.pt")  # Cambia por la ruta real de tu modelo si es necesario
