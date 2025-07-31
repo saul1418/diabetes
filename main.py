@@ -5,7 +5,7 @@ import cv2
 import numpy as np
 import torch
 from ultralytics.nn.tasks import DetectionModel
-from ultralytics.nn.modules.conv import Conv
+from ultralytics.nn.modules import Conv
 import torch.nn.modules.container
 
 # Si el error pide más clases, impórtalas y agrégalas aquí
