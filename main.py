@@ -5,15 +5,22 @@ import cv2
 import numpy as np
 import torch
 from ultralytics.nn.tasks import DetectionModel
-from ultralytics.nn.modules.common import Conv
+from ultralytics.nn.modules.common import Conv as CommonConv
+try:
+    from ultralytics.nn.modules.conv import Conv as ConvMod
+except ImportError:
+    ConvMod = None
 import torch.nn.modules.container
 
-torch.serialization.add_safe_globals([
+safe_globals = [
     DetectionModel,
     torch.nn.modules.container.Sequential,
-    Conv,
-    # Agrega aquí más clases si el error lo pide
-])
+    CommonConv,
+]
+if ConvMod:
+    safe_globals.append(ConvMod)
+
+torch.serialization.add_safe_globals(safe_globals)
 
 app = FastAPI()
 model = YOLO("best.pt")  # Cambia por la ruta real de tu modelo si es necesario
@@ -36,4 +43,4 @@ async def predict(file: UploadFile = File(...)):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=8000)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
