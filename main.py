@@ -3,6 +3,10 @@ from fastapi.responses import JSONResponse
 from ultralytics import YOLO
 import cv2
 import numpy as np
+import torch
+
+# Permitir cargar el modelo con clases personalizadas (PyTorch 2.6+)
+torch.serialization.add_safe_globals(['ultralytics.nn.tasks.DetectionModel'])
 
 app = FastAPI()
 model = YOLO("best.pt")  # Cambia por la ruta real de tu modelo
@@ -22,6 +26,7 @@ async def predict(file: UploadFile = File(...)):
             "box": [x1, y1, x2, y2]
         })
     return JSONResponse(detections)
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("main:app", host="0.0.0.0", port=8000)
