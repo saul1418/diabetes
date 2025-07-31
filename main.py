@@ -5,9 +5,8 @@ import cv2
 import numpy as np
 import torch
 from ultralytics.nn.tasks import DetectionModel
-import torch.nn.modules.container
 
-# Prueba todas las rutas posibles para Conv
+# Registrar Conv como safe global para torch.load
 Conv = None
 try:
     from ultralytics.nn.modules.conv import Conv
@@ -35,7 +34,7 @@ safe_globals = [
 torch.serialization.add_safe_globals(safe_globals)
 
 app = FastAPI()
-model = YOLO("best.pt")  # Cambia por la ruta real de tu modelo si es necesario
+model = YOLO("best.pt")  # El modelo está en la raíz
 
 @app.post("/predict")
 async def predict(file: UploadFile = File(...)):
@@ -55,4 +54,4 @@ async def predict(file: UploadFile = File(...)):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=8000)
+    uvicorn.run("main:app", host="0.0.0.0", port=10000)
