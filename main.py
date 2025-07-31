@@ -4,9 +4,10 @@ from ultralytics import YOLO
 import cv2
 import numpy as np
 import torch
+from ultralytics.nn.tasks import DetectionModel
 
 # Permitir cargar el modelo con clases personalizadas (PyTorch 2.6+)
-torch.serialization.add_safe_globals(['ultralytics.nn.tasks.DetectionModel'])
+torch.serialization.add_safe_globals([DetectionModel])
 
 app = FastAPI()
 model = YOLO("best.pt")  # Cambia por la ruta real de tu modelo
