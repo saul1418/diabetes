@@ -31,7 +31,7 @@ async def predict(file: UploadFile = File(...)):
         detections.append({
             "class": results[0].names[int(box.cls[0])],
             "confidence": float(box.conf[0]),
-            "box": [x1, y1, x2, y2]
+             "box": [x1, y1, x2, y2]
         })
     return JSONResponse(detections)
 
