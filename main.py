@@ -8,11 +8,12 @@ from ultralytics.nn.tasks import DetectionModel
 from ultralytics.nn.modules.conv import Conv
 import torch.nn.modules.container
 
-# Permitir cargar el modelo con clases personalizadas y Sequential (PyTorch 2.6+)
+# Si el error pide más clases, impórtalas y agrégalas aquí
 torch.serialization.add_safe_globals([
     DetectionModel,
     torch.nn.modules.container.Sequential,
-    Conv
+    Conv,
+    # Agrega aquí más clases si el error lo pide
 ])
 
 app = FastAPI()
