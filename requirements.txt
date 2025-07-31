@@ -1,7 +1,7 @@
 setuptools
 fastapi==0.95.2
 uvicorn==0.22.0
-torch==2.7.1
+torch==2.5.2
 ultralytics==8.0.0
 opencv-python
 numpy
