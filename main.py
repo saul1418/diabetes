@@ -5,32 +5,14 @@ import cv2
 import numpy as np
 import torch
 from ultralytics.nn.tasks import DetectionModel
+from ultralytics.nn.common import Conv
 import torch.nn.modules.container
-
-# Importa Conv desde donde esté disponible
-try:
-    from ultralytics.nn.modules.conv import Conv as ConvMod
-except ImportError:
-    ConvMod = None
-try:
-    from ultralytics.nn.modules.common import Conv as CommonConv
-except ImportError:
-    CommonConv = None
-try:
-    from ultralytics.nn.common import Conv as RootConv
-except ImportError:
-    RootConv = None
 
 safe_globals = [
     DetectionModel,
     torch.nn.modules.container.Sequential,
+    Conv,
 ]
-if ConvMod:
-    safe_globals.append(ConvMod)
-if CommonConv:
-    safe_globals.append(CommonConv)
-if RootConv:
-    safe_globals.append(RootConv)
 
 torch.serialization.add_safe_globals(safe_globals)
 
